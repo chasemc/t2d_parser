@@ -25,7 +25,7 @@ typedef struct {
 
 typedef struct {
 	short			checksum;
-	short			unused;
+	char			unused[2];
 	unsigned long	signature <comment="This should be 1515852355">;
 	char			spectrumID[16];
 	long			instrumentID;
