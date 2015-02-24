@@ -1,0 +1,65 @@
+typedef struct {
+	short checksum;
+	short fileHeaderSize;
+	unsigned long signature <comment="This should be 2774143540">;
+	struct SOFTWARE_VERSION {
+	    short major;
+	    short minor;
+	} softwareVersion;
+	struct FILE_VERSION {
+	    short major;
+	    short minor;
+	} fileVersion;
+    short spectrumHeaderSize;
+    short fileTrailerSize;
+    char instrumentDBProvider[128];
+    char fileID[16];
+
+} FileHeader;
+
+typedef struct {
+    unsigned short 		equationType;
+    unsigned short 		nConstants;
+    double 				constants[10]; // maybe should be nConstants?
+} Calibration;
+
+typedef struct {
+	short			checksum;
+	short			unused;
+	unsigned long	signature <comment="This should be 1515852355">;
+	char			spectrumID[16];
+	long			instrumentID;
+	short			operatingMode;
+	short			dataFormat;
+	short			compressionType;
+	short			dataChecksum;
+	long			sizePoints;
+	long			sizeBytes;
+	double			startTime;
+	double			incrementTime;
+	double			timeStamp;
+	double			totalIONCount;
+	double			basePeakTimeS;
+	double			basePeakIntensity;
+	unsigned long	totalShots;
+	unsigned long	totalAccumulations;
+
+	Calibration 	defaultCalibration;
+	Calibration 	acquisitionCalibration;
+
+	double 			locationBounds;
+
+	struct LASER_INTENSITY {
+		double 		min;
+		double 		max;
+	} laserIntensity;
+
+	unsigned long 	longFlags;
+} SpectrumHeader;
+
+
+LittleEndian();
+FileHeader fileHeader;
+SpectrumHeader spectrumHeader;
+char unknown[(fileHeader.fileHeaderSize + fileHeader.spectrumHeaderSize) - (sizeof(FileHeader) + sizeof(SpectrumHeader))];
+char zlibData[spectrumHeader.sizeBytes];
