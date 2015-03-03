@@ -42,12 +42,12 @@ def parse_data(file_data):
     if (len(intensities) != spectrum_header.sizePoints):
         sys.exit("Expected %d points, got %d" % (spectrum_header.sizePoints, len(intensities)))
 
-    readings = [ (solve_mass(
+    readings = zip(solve_mass(
                     spectrum_header.startTime, 
                     spectrum_header.incrementTime, 
-                    index, 
-                    spectrum_header.acquisitionCalibration
-                  ), intensity) for index, intensity in enumerate(intensities) ]
+                    spectrum_header.acquisitionCalibration,
+                    len(intensities)
+                  ), intensities)
 
     return file_header, spectrum_header, readings
 
