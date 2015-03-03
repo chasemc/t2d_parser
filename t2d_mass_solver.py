@@ -1,4 +1,4 @@
-import numpy, numexpr
+import sys, numpy, numexpr
 
 fast_eqn_map = {
     1 : (   '1.0 - 4.0 * c2 * (sqrt(c1) * (time - c0))',
@@ -25,5 +25,8 @@ def solve_mass(start_time, time_increment, calibration, length):
     
     q = numexpr.evaluate(eqn[0])
     mass = numexpr.evaluate(eqn[1])
+
+    if not numpy.all(numpy.isfinite(mass)):
+        sys.exit("Mass value solved to non-finite value (NaN or +-infinity)")
 
     return mass
