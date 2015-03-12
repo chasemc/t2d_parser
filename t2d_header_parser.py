@@ -19,8 +19,11 @@ def parse_version(version_data):
     return Version._make(struct.unpack(version_fmt, version_data))
 
 def parse_cstring(cstring_data):
-    return cstring_data.split(b'\x00')[0].decode('utf8')
-
+	try:
+		return cstring_data.split(b'\x00')[0].decode('utf8')
+	except UnicodeDecodeError:
+		return None
+		
 def parse_file_header(file_header_data):
     file_header = FileHeader._make(struct.unpack(file_header_fmt, file_header_data))
 

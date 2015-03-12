@@ -80,9 +80,10 @@ if __name__ == '__main__':
     print(" done")
     print("Parsing took %fms" % ((end-start)*1000,))
 
+    db_provider = ('"' + file_header.instrumentDBProvider + '"') if file_header.instrumentDBProvider else '???'
     print("""
 Spectrum info:
-    Instrument DB provider:    "%s"
+    Instrument DB provider:    %s
 
     Operating mode:            %d
     Number of points:          %d
@@ -94,7 +95,7 @@ Spectrum info:
 
     Minimum laser intensity:   %f
     Maximum laser intensity:   %f
-    """ % ( file_header.instrumentDBProvider, spectrum_header.operatingMode, spectrum_header.sizePoints,
+    """ % ( db_provider, spectrum_header.operatingMode, spectrum_header.sizePoints,
             spectrum_header.totalIONCount, spectrum_header.basePeakTimeS, spectrum_header.basePeakIntensity, 
             spectrum_header.totalShots, spectrum_header.totalAccumulations,
             spectrum_header.laserIntensity.min, spectrum_header.laserIntensity.max ))
